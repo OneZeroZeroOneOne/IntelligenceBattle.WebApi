@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+
+#nullable disable
+
+namespace IntelligenceBattle.WebApi.Dal.Models
+{
+    public partial class AuthorizationProviderType
+    {
+        public AuthorizationProviderType()
+        {
+            AuthorizationProviders = new HashSet<AuthorizationProvider>();
+        }
+
+        public int Id { get; set; }
+        public string Title { get; set; }
+
+        public virtual ICollection<AuthorizationProvider> AuthorizationProviders { get; set; }
+    }
+}

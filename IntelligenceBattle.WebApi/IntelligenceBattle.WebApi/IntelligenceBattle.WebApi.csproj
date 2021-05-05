@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\IntelligenceBattle.WebApi.Bll\IntelligenceBattle.WebApi.Bll.csproj" />
+    <ProjectReference Include="..\IntelligenceBattle.WebApi.Dal\IntelligenceBattle.WebApi.Dal.csproj" />
+    <ProjectReference Include="..\IntelligenceBattle.WebApi.Security\IntelligenceBattle.WebApi.Security.csproj" />
+    <ProjectReference Include="..\IntelligenceBattle.WebApi.Utilities\IntelligenceBattle.WebApi.Utilities.csproj" />
+  </ItemGroup>
+
+
+</Project>

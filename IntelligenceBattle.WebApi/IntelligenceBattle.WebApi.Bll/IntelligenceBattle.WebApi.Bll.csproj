@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.5" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\IntelligenceBattle.WebApi.Dal\IntelligenceBattle.WebApi.Dal.csproj" />
+    <ProjectReference Include="..\IntelligenceBattle.WebApi.Utilities\IntelligenceBattle.WebApi.Utilities.csproj" />
+  </ItemGroup>
+
+</Project>
