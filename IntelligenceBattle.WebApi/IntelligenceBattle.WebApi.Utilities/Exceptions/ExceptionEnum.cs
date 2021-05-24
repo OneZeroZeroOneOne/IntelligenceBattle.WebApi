@@ -13,5 +13,6 @@ namespace IntelligenceBattle.WebApi.Utilities.Exceptions
         ProviderNotFound = 5,
         LoginIsAbsend = 6,
         UserWithLoginAlreadyExist = 7,
+        ProviderKeyNotFound = 8,
     }
 }

@@ -1,6 +1,8 @@
 using IntelligenceBattle.WebApi.Dal.Contexts;
 using IntelligenceBattle.WebApi.Security.Configs;
+using IntelligenceBattle.WebApi.Security.Handlers;
 using IntelligenceBattle.WebApi.Security.Services;
+using IntelligenceBattle.WebApi.Utilities.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -9,8 +11,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
-using IntelligenceBattle.WebApi.Utilities.Middlewares;
-using IntelligenceBattle.WebApi.Security.Handlers;
 
 namespace IntelligenceBattle.WebApi
 {

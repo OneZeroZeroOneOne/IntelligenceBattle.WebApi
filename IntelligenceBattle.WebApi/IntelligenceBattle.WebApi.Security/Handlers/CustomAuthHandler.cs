@@ -32,10 +32,14 @@ namespace IntelligenceBattle.WebApi.Security.Handlers
         {
 
             if (!Request.Headers.ContainsKey("Authorization"))
-                return AuthenticateResult.Fail("absent authorization header");
+                return AuthenticateResult.Fail("authorization header is absent");
             //var scope = serviceProvider.CreateScope
             string token = Request.Headers["Authorization"];
             IProviderResolver resolver = ProviderResolverFactory.GetResolver(token, _serviceProvider);
+            if(resolver == null)
+            {
+                return AuthenticateResult.Fail("unknown provider");
+            }
             try
             {
                 var claims = resolver.GetClaims();
@@ -46,6 +50,7 @@ namespace IntelligenceBattle.WebApi.Security.Handlers
                 var identity = new ClaimsIdentity(claims, Scheme.Name);
                 var principal = new System.Security.Principal.GenericPrincipal(identity, null);
                 var ticket = new AuthenticationTicket(principal, Scheme.Name);
+                
                 return AuthenticateResult.Success(ticket);
             }
             catch
@@ -66,10 +71,11 @@ namespace IntelligenceBattle.WebApi.Security.Handlers
                 return (IProviderResolver)ActivatorUtilities.CreateInstance(serviceProvider, typeof(UIProviderResolver), token);
             }
             //(token.StartsWith("telegram", StringComparison.OrdinalIgnoreCase))
-            else 
+            else if(token.StartsWith("telegram", StringComparison.OrdinalIgnoreCase))
             {
                 return (IProviderResolver)ActivatorUtilities.CreateInstance(serviceProvider, typeof(TelegramProviderResolver), token);
             }
+            return null;
         }
     }
 }

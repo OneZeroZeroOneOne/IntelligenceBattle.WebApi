@@ -17,7 +17,7 @@ namespace IntelligenceBattle.WebApi.Bll.Services
             _context = publicContext;
         }
 
-        public async Task<User> RegisterUser(RegisterInModel registerInModel)
+        public async Task<User> RegisterUser(RegisterInModel registerInModel, string pT)
         {
             var provider = await _context.AuthorizationProviders.FirstOrDefaultAsync(x => x.Id == registerInModel.ProviderId);
             if (provider == null) throw ExceptionFactory.FriendlyException(ExceptionEnum.ProviderNotFound, "provider not found");
