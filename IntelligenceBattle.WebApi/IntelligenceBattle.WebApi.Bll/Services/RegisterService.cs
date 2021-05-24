@@ -5,19 +5,33 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using IntelligenceBattle.WebApi.Utilities.Exceptions;
 using System;
+using IntelligenceBattle.WebApi.Dal.Models.In;
 
 namespace IntelligenceBattle.WebApi.Bll.Services
 {
-    public class RegisterService
+    public class RegisterServiceUI
     {
         public PublicContext _context;
-        public RegisterService(PublicContext publicContext)
+        public RegisterServiceUI(PublicContext publicContext)
         {
             _context = publicContext;
         }
 
-        public async Task<User> RegisterUser(string login, string password, string name, string surname)
+        public async Task<User> RegisterUser(RegisterInModel registerInModel)
         {
+            var provider = await _context.AuthorizationProviders.FirstOrDefaultAsync(x => x.Id == registerInModel.ProviderId);
+            if (provider == null) throw ExceptionFactory.FriendlyException(ExceptionEnum.ProviderNotFound, "provider not found");
+            if (provider.Id == 1)
+            {
+                if (registerInModel.Login == null) throw ExceptionFactory.FriendlyException(ExceptionEnum.LoginIsAbsend, "login is absend")
+                var userSec = await _context.UserSecurities.FirstOrDefaultAsync(x => x.Login == registerInModel.Login);
+                if (userSec) throw ExceptionFactory.FriendlyException(ExceptionEnum.UserWithLoginAlreadyExist, "user with this login already exist");
+                var newUserSec = new UserSecurity
+                {
+
+                }
+            }
+
             var userSec = await _context.UserSecurities.Where(x => x.Login == login).Include(x => x.User).FirstOrDefaultAsync();
             if (userSec != null)
             {

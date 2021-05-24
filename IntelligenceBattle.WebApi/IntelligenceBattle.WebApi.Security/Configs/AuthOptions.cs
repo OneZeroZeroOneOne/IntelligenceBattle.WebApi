@@ -1,18 +1,20 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
 
 namespace IntelligenceBattle.WebApi.Security.Configs
 {
-    public class AuthOptions
+    public class AuthOptions : AuthenticationSchemeOptions
     {
-        public static string ISSUER = Environment.GetEnvironmentVariable("ISSUER"); // издатель токена
-        public static string AUDIENCE = Environment.GetEnvironmentVariable("AUDIENCE"); // потребитель токена
-        public static string KEY = Environment.GetEnvironmentVariable("KEY");   // ключ для шифрации
-        public const int LIFETIME = 60; // время жизни токена - 1 минута
-        public static SymmetricSecurityKey GetSymmetricSecurityKey()
+        public AuthOptions()
         {
-            return new SymmetricSecurityKey(Encoding.ASCII.GetBytes(KEY));
+
         }
+        public string Issuer { get; set; } // издатель токена
+        public string Audience { get; set; } // потребитель токена
+        public string Key{ get; set; }   // ключ для шифрации
+        public int Lifetime { get; set;} // время жизни токена - 1 минута
+        public SymmetricSecurityKey SecurityKey { get; set; }
     }
 }

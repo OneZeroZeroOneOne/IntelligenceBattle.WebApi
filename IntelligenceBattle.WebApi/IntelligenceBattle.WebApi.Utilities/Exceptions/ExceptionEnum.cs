@@ -9,5 +9,9 @@ namespace IntelligenceBattle.WebApi.Utilities.Exceptions
         UserWithThisLoginAlreadyExist = 1,
         PasswordTooShort = 2,
         LoginTooShort = 3,
+        SecurityKeyIsNull = 4,
+        ProviderNotFound = 5,
+        LoginIsAbsend = 6,
+        UserWithLoginAlreadyExist = 7,
     }
 }
