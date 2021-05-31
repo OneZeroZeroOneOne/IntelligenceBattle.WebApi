@@ -10,6 +10,7 @@ namespace IntelligenceBattle.WebApi.Dal.Models
         public User()
         {
             GameUsers = new HashSet<GameUser>();
+            SearchGames = new HashSet<SearchGame>();
             UserAnswers = new HashSet<UserAnswer>();
             UserSecurities = new HashSet<UserSecurity>();
         }
@@ -20,6 +21,7 @@ namespace IntelligenceBattle.WebApi.Dal.Models
         public DateTime? CreatedDatetime { get; set; }
 
         public virtual ICollection<GameUser> GameUsers { get; set; }
+        public virtual ICollection<SearchGame> SearchGames { get; set; }
         public virtual ICollection<UserAnswer> UserAnswers { get; set; }
         public virtual ICollection<UserSecurity> UserSecurities { get; set; }
     }

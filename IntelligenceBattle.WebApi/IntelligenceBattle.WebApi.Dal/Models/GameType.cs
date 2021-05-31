@@ -5,18 +5,17 @@ using System.Collections.Generic;
 
 namespace IntelligenceBattle.WebApi.Dal.Models
 {
-    public partial class AuthorizationProvider
+    public partial class GameType
     {
-        public AuthorizationProvider()
+        public GameType()
         {
             SearchGames = new HashSet<SearchGame>();
         }
 
         public int Id { get; set; }
-        public string Key { get; set; }
-        public int? AuthorizationProviderTypeId { get; set; }
+        public string Tittle { get; set; }
+        public int PlayerCount { get; set; }
 
-        public virtual AuthorizationProviderType AuthorizationProviderType { get; set; }
         public virtual ICollection<SearchGame> SearchGames { get; set; }
     }
 }

@@ -5,63 +5,61 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using IntelligenceBattle.WebApi.Utilities.Exceptions;
 using System;
+using IntelligenceBattle.WebApi.Bll.Abstractions;
 using IntelligenceBattle.WebApi.Dal.Models.In;
 
 namespace IntelligenceBattle.WebApi.Bll.Services
 {
-    public class RegisterServiceUI
+    public class RegisterServiceUI : IRegisterService
     {
-        public PublicContext _context;
-        public RegisterServiceUI(PublicContext publicContext)
+        public PublicContext context;
+        public string token;
+        public RegisterServiceUI(string t, PublicContext publicContext)
         {
-            _context = publicContext;
+            context = publicContext;
+            token = t;
         }
 
-        public async Task<User> RegisterUser(RegisterInModel registerInModel, string pT)
+        public string GetAuthCenterName()
         {
-            var provider = await _context.AuthorizationProviders.FirstOrDefaultAsync(x => x.Id == registerInModel.ProviderId);
-            if (provider == null) throw ExceptionFactory.FriendlyException(ExceptionEnum.ProviderNotFound, "provider not found");
-            if (provider.Id == 1)
+            return "bearer";
+        }
+
+        public async Task<int> GetProviderId()
+        {
+            return 1;
+        }
+
+        public async Task<User> RegisterUser(RegisterInModel registerInModel)
+        {
+            if (registerInModel.Login != null && registerInModel.Password != null)
             {
-                if (registerInModel.Login == null) throw ExceptionFactory.FriendlyException(ExceptionEnum.LoginIsAbsend, "login is absend")
-                var userSec = await _context.UserSecurities.FirstOrDefaultAsync(x => x.Login == registerInModel.Login);
-                if (userSec) throw ExceptionFactory.FriendlyException(ExceptionEnum.UserWithLoginAlreadyExist, "user with this login already exist");
-                var newUserSec = new UserSecurity
+                var userSec = await context.UserSecurities
+                    .Include(x => x.User)
+                    .FirstOrDefaultAsync(x => x.Login == registerInModel.Login);
+                if (userSec != null)
                 {
-
+                    throw ExceptionFactory.FriendlyException(ExceptionEnum.LoginExist, "login already exist");
                 }
+                var user = new User
+                {
+                    Name = registerInModel.Login,
+                    CreatedDatetime = DateTime.Now,
+                };
+                user.UserSecurities.Add(new UserSecurity
+                {
+                    Login = registerInModel.Login,
+                    Password = registerInModel.Password,
+                    AuthorizationCenterId = 1,
+                });
+                await context.Users.AddAsync(user);
+                await context.SaveChangesAsync();
+                return user;
             }
-
-            var userSec = await _context.UserSecurities.Where(x => x.Login == login).Include(x => x.User).FirstOrDefaultAsync();
-            if (userSec != null)
+            else
             {
-                throw ExceptionFactory.FriendlyException(ExceptionEnum.UserWithThisLoginAlreadyExist, "user with this login already exist");
+                throw ExceptionFactory.SoftException(ExceptionEnum.InvalidLoginOrPassword, "InvalidLoginOrPassword");
             }
-            if(login.Length < 4)
-            {
-                throw ExceptionFactory.FriendlyException(ExceptionEnum.LoginTooShort, "login too short");
-            }
-            if(password.Length < 8)
-            {
-                throw ExceptionFactory.FriendlyException(ExceptionEnum.PasswordTooShort, "password too short");
-            }
-            var user = new User()
-            {
-                Name = name,
-                Surname = surname,
-                CreatedDatetime = DateTime.Now
-            };
-            await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
-            var newUserSec = new UserSecurity()
-            {
-                UserId = user.Id,
-                Login = login,
-                Password = password,
-            };
-            await _context.UserSecurities.AddAsync(newUserSec);
-            await _context.SaveChangesAsync();
-            return user;
         }
 
     }

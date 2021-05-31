@@ -4,11 +4,12 @@ using System.Text;
 
 namespace IntelligenceBattle.WebApi.Dal.Models.Out
 {
-    public class AuthorizationResponse
+    public class UserResponce
     {
-        public int UserId { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
-        public string Token { get; set; }
 
+        public string Surname { get; set; }
+        public DateTime CreatedDateTime { get; set; }
     }
 }

@@ -18,59 +18,18 @@ namespace IntelligenceBattle.WebApi.Security.ProviderResolvers
 {
     public class UIProviderResolver : IProviderResolver    
     {
-        private JwtTokenService _jwtTokenService;
-        private string token;
-        private AuthOptions authOptions;
-        public UIProviderResolver(string t, JwtTokenService jwtTokenService, AuthOptions au)
+        public JwtTokenService jwtTokenService;
+        public string token;
+        public UIProviderResolver(string t, JwtTokenService jTService)
         {
+            jwtTokenService = jTService;
             token = t;
-            authOptions = au;
         }
 
-        public List<Claim> GetClaims()
+        public async Task<List<Claim>> GetClaims()
         {
-            if (string.IsNullOrEmpty(authOptions.Key) || string.IsNullOrEmpty(token))
-            {
-                throw ExceptionFactory.SoftException(ExceptionEnum.SecurityKeyIsNull, "Invalid security key");
-            }
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var securityKeyBytes = Encoding.ASCII.GetBytes(authOptions.Key);
-
-            SecurityToken SignatureValidator(string encodedToken, TokenValidationParameters parameters)
-            {
-                var jwt = new JwtSecurityToken(encodedToken);
-
-                var hmac = new HMACSHA256(securityKeyBytes);
-
-                var signingCredentials = new SigningCredentials(new SymmetricSecurityKey(hmac.Key), SecurityAlgorithms.HmacSha256Signature, SecurityAlgorithms.Sha256Digest);
-
-                var signKey = signingCredentials.Key as SymmetricSecurityKey;
-
-                var encodedData = jwt.EncodedHeader + "." + jwt.EncodedPayload;
-                var compiledSignature = Encode(encodedData, signKey.Key);
-
-                if (compiledSignature != jwt.RawSignature)
-                {
-                    throw new Exception("Token signature validation failed.");
-                }
-                return jwt;
-            }
-
-            tokenHandler.ValidateToken(token, new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(securityKeyBytes),
-                ValidateIssuer = false,
-                ValidateAudience = false,
-                RequireSignedTokens = false, //погугли
-                ClockSkew = TimeSpan.Zero,
-                SignatureValidator = SignatureValidator,
-            }, out SecurityToken validatedToken);
-
-            var jwtToken = (JwtSecurityToken)validatedToken;
+            var jwtToken = jwtTokenService.ParseToken(token);
             return jwtToken.Claims.ToList();
-
         }
         private static string Encode(string input, byte[] key)
         {

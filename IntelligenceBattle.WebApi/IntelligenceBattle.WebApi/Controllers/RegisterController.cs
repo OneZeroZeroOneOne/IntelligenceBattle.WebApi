@@ -5,7 +5,9 @@ using IntelligenceBattle.WebApi.Security.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
+using IntelligenceBattle.WebApi.Utilities.Exceptions;
 
 namespace IntelligenceBattle.WebApi.Controllers
 {
@@ -13,11 +15,11 @@ namespace IntelligenceBattle.WebApi.Controllers
     [ApiController]
     public class RegisterController : ControllerBase
     {
-        public JwtTokenService _jwtTokenService;
+        public JwtTokenService jwtTokenService;
         public IServiceProvider serviceProvider;
-        public RegisterController(JwtTokenService jwtTokenService, IServiceProvider sP)
+        public RegisterController(JwtTokenService jTokenService, IServiceProvider sP)
         {
-            _jwtTokenService = jwtTokenService;
+            jwtTokenService = jTokenService;
             serviceProvider = sP;
         }
 
@@ -27,13 +29,38 @@ namespace IntelligenceBattle.WebApi.Controllers
             var isProviderTokenExist = Request.Headers.TryGetValue("ProviderToken", out var providerToken);
             if (isProviderTokenExist)
             {
-                var regService = RegisterServiceFactory.GetRegisterServiceProvider(registerInModel.ProviderId, serviceProvider);
-                regService.RegisterUser();
-
-
-                _jwtTokenService.GetIdentity();
+                var providerTokenComponents = providerToken.ToString().Split(" ");
+                if (providerTokenComponents.Length == 2)
+                {
+                    var regService = RegisterServiceFactory.GetRegisterServiceCenter(providerTokenComponents[0], providerTokenComponents[1], serviceProvider);
+                    if (regService != null)
+                    {
+                        var user = await regService.RegisterUser(registerInModel);
+                        var token = jwtTokenService.GenerateToken(regService.GetAuthCenterName(),jwtTokenService.GetIdentity(user.Id,
+                            user.UserSecurities.First().AuthorizationCenterId,
+                            await regService.GetProviderId()));
+                        return new AuthorizationResponse
+                        {
+                            Name = user.Name,
+                            UserId = user.Id,
+                            Token = token,
+                        };
+                    }
+                    else
+                    {
+                        throw ExceptionFactory.SoftException(ExceptionEnum.AuthCenterNotFound, "AuthCenterNotFound");
+                    }
+                }
+                else
+                {
+                    throw ExceptionFactory.SoftException(ExceptionEnum.InvalidProviderTokenFormat, "InvalidProviderTokenFormat");
+                }
+                
             }
-            //return Ok();
+            else
+            {
+                throw ExceptionFactory.SoftException(ExceptionEnum.ProviderTokenAbsent, "ProviderToken");
+            }
         }
     }
 }

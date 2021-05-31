@@ -14,7 +14,9 @@ namespace IntelligenceBattle.WebApi.Dal.Models
 
         public int Id { get; set; }
         public string Title { get; set; }
+        public int AuthorizationProviderCenterId { get; set; }
 
+        public virtual AuthorizationCenter AuthorizationProviderCenter { get; set; }
         public virtual ICollection<AuthorizationProvider> AuthorizationProviders { get; set; }
     }
 }

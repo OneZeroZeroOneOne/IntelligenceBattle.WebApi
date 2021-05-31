@@ -9,7 +9,11 @@ namespace IntelligenceBattle.WebApi.Controllers
     [ApiController]
     public class ApiControllerBase : ControllerBase
     {
-        string ProviderId => User.Claims.First(x => x.Type == "ProvideId").Value;
+        public int AuthCenterId => int.Parse(User.Claims.First(x => x.Type == "AuthCenterId").Value);
+
+        public int ProviderId => int.Parse(User.Claims.First(x => x.Type == "ProviderId").Value);
+
+        public int UserId => int.Parse(User.Claims.First(x => x.Type == "UserId").Value);
 
     }
 }

@@ -9,12 +9,14 @@ namespace IntelligenceBattle.WebApi.Dal.Models
     {
         public AuthorizationCenter()
         {
+            AuthorizationProviderTypes = new HashSet<AuthorizationProviderType>();
             UserSecurities = new HashSet<UserSecurity>();
         }
 
         public int Id { get; set; }
         public string Title { get; set; }
 
+        public virtual ICollection<AuthorizationProviderType> AuthorizationProviderTypes { get; set; }
         public virtual ICollection<UserSecurity> UserSecurities { get; set; }
     }
 }

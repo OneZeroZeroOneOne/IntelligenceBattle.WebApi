@@ -14,5 +14,14 @@ namespace IntelligenceBattle.WebApi.Utilities.Exceptions
         LoginIsAbsend = 6,
         UserWithLoginAlreadyExist = 7,
         ProviderKeyNotFound = 8,
+        AuthCenterNotFound = 9,
+        InvalidLoginOrPassword = 10,
+        LoginExist = 11,
+        ProviderTokenAbsent = 12,
+        InvalidProviderTokenFormat = 13,
+        RealIdIsAbsent = 14,
+        UserNotFound = 15,
+        GameAlreadySearch = 16,
+        LastGameNotEnd = 17,
     }
 }

@@ -9,6 +9,11 @@ namespace IntelligenceBattle.WebApi.Bll.Abstractions
 {
     public interface IRegisterService
     {
-        Task<User> RegisterUser(RegisterInModel registerInModel, string providerToken);
+        Task<User> RegisterUser(RegisterInModel registerInModel);
+
+        public string GetAuthCenterName();
+
+        public Task<int> GetProviderId();
+
     }
 }

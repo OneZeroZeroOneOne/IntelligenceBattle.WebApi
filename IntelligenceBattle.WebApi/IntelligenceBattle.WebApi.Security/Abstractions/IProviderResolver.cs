@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace IntelligenceBattle.WebApi.Security.Abstractions
 {
     public interface IProviderResolver
     {
-        List<Claim> GetClaims();
+        Task<List<Claim>> GetClaims();
     }
 }

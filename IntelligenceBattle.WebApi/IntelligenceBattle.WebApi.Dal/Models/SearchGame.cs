@@ -5,21 +5,23 @@ using System.Collections.Generic;
 
 namespace IntelligenceBattle.WebApi.Dal.Models
 {
-    public partial class Game
+    public partial class SearchGame
     {
-        public Game()
+        public SearchGame()
         {
             GameUsers = new HashSet<GameUser>();
-            UserAnswers = new HashSet<UserAnswer>();
         }
 
         public int Id { get; set; }
-        public DateTime CreatedDatetime { get; set; }
+        public int GameTypeId { get; set; }
         public int CategoryId { get; set; }
-        public bool IsEnd { get; set; }
+        public int UserId { get; set; }
+        public int ProviderId { get; set; }
 
         public virtual Category Category { get; set; }
+        public virtual GameType GameType { get; set; }
+        public virtual AuthorizationProvider Provider { get; set; }
+        public virtual User User { get; set; }
         public virtual ICollection<GameUser> GameUsers { get; set; }
-        public virtual ICollection<UserAnswer> UserAnswers { get; set; }
     }
 }

@@ -18,18 +18,20 @@ namespace IntelligenceBattle.WebApi.Security.Services
         {
             _authOptions = authOptions;
         }
-        public ClaimsIdentity GetIdentity(int userId)
+        public ClaimsIdentity GetIdentity(int userId, int authCenterId, int providerId)
         {
             var claims = new List<Claim>
             {
-                new Claim("Id", Convert.ToString(userId)),
+                new Claim("UserId", Convert.ToString(userId)),
+                new Claim("AuthCenterId", Convert.ToString(authCenterId)),
+                new Claim("ProviderId", Convert.ToString(providerId)),
             };
             ClaimsIdentity claimsIdentity =
             new ClaimsIdentity(claims);
             return claimsIdentity;
         }
 
-        public string GenerateToken(ClaimsIdentity claims)
+        public string GenerateToken(string authCenter, ClaimsIdentity claims)
         {
             var now = DateTime.UtcNow;
 
@@ -40,7 +42,7 @@ namespace IntelligenceBattle.WebApi.Security.Services
                 claims: claims.Claims,
                 expires: now.Add(TimeSpan.FromMinutes(_authOptions.Lifetime)),
                 signingCredentials: new SigningCredentials(_authOptions.SecurityKey, SecurityAlgorithms.HmacSha256));
-            return "Bearer " + new JwtSecurityTokenHandler().WriteToken(jwt);
+            return authCenter + new JwtSecurityTokenHandler().WriteToken(jwt);
         }
 
         public JwtSecurityToken ParseToken(string token)

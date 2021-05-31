@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -33,17 +34,16 @@ namespace IntelligenceBattle.WebApi.Security.Handlers
 
             if (!Request.Headers.ContainsKey("Authorization"))
                 return AuthenticateResult.Fail("authorization header is absent");
-            //var scope = serviceProvider.CreateScope
-            string token = Request.Headers["Authorization"];
-            IProviderResolver resolver = ProviderResolverFactory.GetResolver(token, _serviceProvider);
+            string tokenHeader = Request.Headers["Authorization"];
+            IProviderResolver resolver = ProviderResolverFactory.GetResolver(tokenHeader.Split(" ").First().ToLower(), tokenHeader.Split(" ").Last(), _serviceProvider);
             if(resolver == null)
             {
-                return AuthenticateResult.Fail("unknown provider");
+                return AuthenticateResult.Fail("unknown auth center");
             }
             try
             {
-                var claims = resolver.GetClaims();
-                if (claims.Count > 0)
+                var claims = await resolver.GetClaims();
+                if (claims.Count == 0)
                 {
                     return AuthenticateResult.Fail("unauthorized");
                 }
@@ -64,14 +64,14 @@ namespace IntelligenceBattle.WebApi.Security.Handlers
 
     class ProviderResolverFactory
     {
-        public static IProviderResolver GetResolver(string token, IServiceProvider serviceProvider)
+        public static IProviderResolver GetResolver(string authCenter, string token,IServiceProvider serviceProvider)
         {
-            if(token.StartsWith("bearer", StringComparison.OrdinalIgnoreCase))
+            if(authCenter == "bearer")
             {
                 return (IProviderResolver)ActivatorUtilities.CreateInstance(serviceProvider, typeof(UIProviderResolver), token);
             }
             //(token.StartsWith("telegram", StringComparison.OrdinalIgnoreCase))
-            else if(token.StartsWith("telegram", StringComparison.OrdinalIgnoreCase))
+            else if(authCenter == "telegram")
             {
                 return (IProviderResolver)ActivatorUtilities.CreateInstance(serviceProvider, typeof(TelegramProviderResolver), token);
             }
