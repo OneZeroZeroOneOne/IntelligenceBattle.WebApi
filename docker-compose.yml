@@ -6,9 +6,9 @@ services:
       context: ./IntelligenceBattle.WebApi
       dockerfile: ./Dockerfile
     ports:
-      - "8000:7000"
+      - "8008:7000"
     expose:
-      - "8000"
+      - "8008"
     env_file:
      - ./.env
     environment: 
