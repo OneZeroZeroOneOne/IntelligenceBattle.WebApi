@@ -52,5 +52,15 @@ namespace IntelligenceBattle.WebApi.Bll.Services
             });
             await context.SaveChangesAsync();
         }
+
+        public async Task<List<GameType>> GetGameType()
+        {
+            return await context.GameTypes.ToListAsync();
+        }
+
+        public async Task<List<Category>> GetCategories()
+        {
+            return await context.Categories.ToListAsync();
+        }
     }
 }
