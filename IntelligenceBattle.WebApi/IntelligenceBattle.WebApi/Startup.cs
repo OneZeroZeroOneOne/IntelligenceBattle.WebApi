@@ -79,14 +79,14 @@ namespace IntelligenceBattle.WebApi
 
             app.UseSwagger(c => c.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
             {
-                var basePath = "/api/items";
+                var basePath = "/api";
                 swaggerDoc.Servers = new List<OpenApiServer>
                 {
                     new OpenApiServer {Url = $"{httpReq.Scheme}://{httpReq.Host.Value}{basePath}"},
                     new OpenApiServer {Url = $"{httpReq.Scheme}://{httpReq.Host.Value}/"}
                 };
             }));
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MerchantShop.WebApi.Items v1"));
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/api/swagger/v1/swagger.json", "MerchantShop.WebApi.Items v1"));
 
             app.UseRouting();
 
