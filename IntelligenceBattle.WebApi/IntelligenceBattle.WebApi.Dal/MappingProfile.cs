@@ -12,6 +12,7 @@ namespace IntelligenceBattle.WebApi.Dal
         public MappingProfile()
         {
             CreateMap<SearchGame, OutSearchGame>();
+            CreateMap<User, UserResponce>();
         }
     }
 }

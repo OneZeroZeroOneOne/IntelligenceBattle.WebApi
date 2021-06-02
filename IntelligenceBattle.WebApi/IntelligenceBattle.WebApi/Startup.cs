@@ -52,6 +52,7 @@ namespace IntelligenceBattle.WebApi
                 mc.AddProfile(new MappingProfile());
             });
             services.AddScoped<GameService>();
+            services.AddScoped<UserService>();
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
             services.AddAuthentication("RootProvider").AddScheme<AuthOptions, CustomAuthHandler>("RootProvider", x => new AuthOptions

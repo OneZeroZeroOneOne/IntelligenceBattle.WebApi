@@ -45,7 +45,7 @@ namespace IntelligenceBattle.WebApi.Security.ProviderResolvers
             if (parameters.ContainsKey("RealId"))
             {
                 var userSec = await context.UserSecurities.Include(x => x.User)
-                    .FirstOrDefaultAsync(x => x.RealId == int.Parse(parameters["RealId"]));
+                    .FirstOrDefaultAsync(x => x.RealId == int.Parse(parameters["RealId"]) && x.AuthorizationCenterId == provider.AuthorizationProviderType.AuthorizationProviderCenterId);
                 if (userSec != null)
                 {
                     return new List<Claim>
