@@ -30,7 +30,7 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
     ports:
-      - "9000:9000"
+      - "8008:8008"
 
 volumes:
   database-data: # named volumes can be managed easier using docker-compose
