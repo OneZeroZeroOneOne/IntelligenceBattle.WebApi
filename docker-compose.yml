@@ -2,6 +2,8 @@ version: "3"
 
 services:
   intelligence-battle-webapi:
+    depends_on:
+      - postgresql
     build:
       context: ./IntelligenceBattle.WebApi
       dockerfile: ./Dockerfile
@@ -13,3 +15,14 @@ services:
      - ./.env
     environment: 
       - ASPNETCORE_ENVIRONMENT=Production
+  postgresql:
+    image: "postgres:12"
+    env_file:
+      - ./.env
+    volumes:
+      - database-data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+
+volumes:
+  database-data: # named volumes can be managed easier using docker-compose
