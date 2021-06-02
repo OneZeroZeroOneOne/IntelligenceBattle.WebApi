@@ -86,7 +86,7 @@ namespace IntelligenceBattle.WebApi
                     new OpenApiServer {Url = $"{httpReq.Scheme}://{httpReq.Host.Value}/"}
                 };
             }));
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("./swagger/v1/swagger.json", "MerchantShop.WebApi.Items v1"));
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("./api/swagger/v1/swagger.json", "MerchantShop.WebApi.Items v1"));
 
             app.UseRouting();
 
