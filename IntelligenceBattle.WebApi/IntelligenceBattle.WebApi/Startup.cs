@@ -65,7 +65,7 @@ namespace IntelligenceBattle.WebApi
             });
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MerchantShop.WebApi.Items", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "IntelligenceBattle.WebApi", Version = "v1" });
             });
         }
 
@@ -77,16 +77,23 @@ namespace IntelligenceBattle.WebApi
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseSwagger(c => c.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
+
+            if (env.IsDevelopment())
             {
-                var basePath = "/api";
-                swaggerDoc.Servers = new List<OpenApiServer>
+                app.UseSwagger();
+            }
+            else
+            {
+                app.UseSwagger(c => c.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
                 {
-                    new OpenApiServer {Url = $"{httpReq.Scheme}://{httpReq.Host.Value}{basePath}"},
-                    new OpenApiServer {Url = $"{httpReq.Scheme}://{httpReq.Host.Value}/"}
-                };
-            }));
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/api/swagger/v1/swagger.json", "MerchantShop.WebApi.Items v1"));
+                    var basePath = "/api";
+                    swaggerDoc.Servers = new List<OpenApiServer>
+                    {
+                        new OpenApiServer {Url = $"{httpReq.Scheme}://{httpReq.Host.Value}{basePath}"},
+                    };
+                }));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/api/swagger/v1/swagger.json", "IntelligenceBattle.WebApi v1"));
+            }
 
             app.UseRouting();
 
