@@ -23,6 +23,14 @@ services:
       - database-data:/var/lib/postgresql/data/
     ports:
       - "5434:5432"
+  intelligence-battle-services-game-manager:
+    depends_on:
+      - postgresql
+    image: forevka/intelligence-battle-service
+    env_file:
+     - ./.env
+    environment: 
+      - ASPNETCORE_ENVIRONMENT=Production
   nginx:
     depends_on:
       - intelligence-battle-webapi
@@ -33,4 +41,4 @@ services:
       - "80:80"
 
 volumes:
-  database-data: # named volumes can be managed easier using docker-compose
+  database-data: 
