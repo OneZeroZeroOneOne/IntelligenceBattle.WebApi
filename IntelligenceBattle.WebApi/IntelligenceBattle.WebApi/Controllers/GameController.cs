@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using IntelligenceBattle.WebApi.Bll.Services;
@@ -39,5 +40,22 @@ namespace IntelligenceBattle.WebApi.Controllers
             await gameService.StopSearchGame(searchId);
             return Ok();
         }
+
+        [HttpGet]
+        [Route("GameType")]
+        public async Task<List<OutGameTypeResponce>> GetGameType()
+        {
+            var gameTypes = await gameService.GetGameType();
+            return mapperProfile.Map<List<OutGameTypeResponce>>(gameTypes);
+        }
+
+        [HttpGet]
+        [Route("Category")]
+        public async Task<List<OutCategoryResponce>> GetCategories()
+        {
+            var categories = await gameService.GetCategories();
+            return mapperProfile.Map<List<OutCategoryResponce>>(categories);
+        }
+
     }
 }
