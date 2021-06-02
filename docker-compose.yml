@@ -4,7 +4,7 @@ services:
   intelligence-battle-webapi:
     depends_on:
       - postgresql
-    image: bitoid/intelligence-battle-service:dev
+    image: bitoid/intelligence-battle-webapi:dev
     ports:
       - "8008:7000"
     expose:
