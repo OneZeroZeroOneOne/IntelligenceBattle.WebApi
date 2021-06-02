@@ -13,6 +13,8 @@ namespace IntelligenceBattle.WebApi.Dal
         {
             CreateMap<SearchGame, OutSearchGame>();
             CreateMap<User, UserResponce>();
+            CreateMap<GameType, OutGameTypeResponce>();
+            CreateMap<Category, OutCategoryResponce>();
         }
     }
 }
