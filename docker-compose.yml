@@ -9,8 +9,6 @@ services:
       dockerfile: ./Dockerfile
     ports:
       - "8008:7000"
-    expose:
-      - "8008"
     env_file:
      - ./.env
     environment: 
