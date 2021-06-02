@@ -26,7 +26,7 @@ services:
   intelligence-battle-services-game-manager:
     depends_on:
       - postgresql
-    image: bitoid/intelligence-battle-service
+    image: bitoid/intelligence-battle-service:dev
     env_file:
      - ./.env
     environment: 
