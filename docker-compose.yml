@@ -4,9 +4,7 @@ services:
   intelligence-battle-webapi:
     depends_on:
       - postgresql
-    build:
-      context: ./IntelligenceBattle.WebApi
-      dockerfile: ./Dockerfile
+    image: bitoid/intelligence-battle-service:dev
     ports:
       - "8008:7000"
     expose:
