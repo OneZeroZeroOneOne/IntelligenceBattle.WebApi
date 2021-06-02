@@ -44,6 +44,7 @@ namespace IntelligenceBattle.WebApi.Bll.Services
                 var user = new User
                 {
                     Name = registerInModel.Login,
+                    Surname = registerInModel.Surname,
                     CreatedDatetime = DateTime.Now,
                 };
                 user.UserSecurities.Add(new UserSecurity

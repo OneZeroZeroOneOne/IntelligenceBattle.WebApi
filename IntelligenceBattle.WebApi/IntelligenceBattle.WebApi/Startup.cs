@@ -35,8 +35,8 @@ namespace IntelligenceBattle.WebApi
 
             services.AddScoped(x =>
             {
-                //return new PublicContext("Host=185.87.48.116;Port=5434;Database=intelligencebattle;Username=postgres;Password=123123AAA");
-                return new PublicContext(Environment.GetEnvironmentVariable("databaseconnectionstring"));
+                return new PublicContext("Host=185.87.48.116;Port=5434;Database=intelligencebattle;Username=postgres;Password=123123AAA");
+                //return new PublicContext(Environment.GetEnvironmentVariable("databaseconnectionstring"));
             });
             services.AddSingleton(x => new AuthOptions 
             { 
