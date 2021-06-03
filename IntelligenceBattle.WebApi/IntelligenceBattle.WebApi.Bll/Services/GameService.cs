@@ -27,12 +27,12 @@ namespace IntelligenceBattle.WebApi.Bll.Services
             var lastSearcGame = await context.SearchGames.FirstOrDefaultAsync(x => x.UserId == userId);
             if (lastSearcGame != null)
             {
-                throw ExceptionFactory.FriendlyException(ExceptionEnum.GameAlreadySearch, "GameAlreadySearch");
+                throw ExceptionFactory.SoftException(ExceptionEnum.GameAlreadySearch, "GameAlreadySearch");
             }
             var game = await context.Games.FirstOrDefaultAsync(x => x.IsEnd == true);
             if (game != null)
             {
-                throw ExceptionFactory.FriendlyException(ExceptionEnum.LastGameNotEnd, "LastGameNotEnd");
+                throw ExceptionFactory.SoftException(ExceptionEnum.LastGameNotEnd, "LastGameNotEnd");
             }
             var newSearchGame = new SearchGame
             {
