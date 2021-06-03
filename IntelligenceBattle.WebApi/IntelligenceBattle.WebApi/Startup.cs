@@ -81,6 +81,7 @@ namespace IntelligenceBattle.WebApi
             if (env.IsDevelopment())
             {
                 app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "IntelligenceBattle.WebApi v1"));
             }
             else
             {

@@ -13,8 +13,10 @@ namespace IntelligenceBattle.WebApi.Dal
         {
             CreateMap<SearchGame, OutSearchGame>();
             CreateMap<User, UserResponce>();
-            CreateMap<GameType, OutGameTypeResponce>();
-            CreateMap<Category, OutCategoryResponce>();
+            CreateMap<GameType, OutGameType>().ForMember(x => x.Translations, x=> x.MapFrom(x => x.GameTypeTranslations));
+            CreateMap<Category, OutCategory>().ForMember(x => x.Translations, x => x.MapFrom(x => x.CategoryTranslations));
+            CreateMap<CategoryTranslation, OutCategoryTranslation>().ForMember(x => x.LangCode, x => x.MapFrom(x => x.Lang.Code));
+            CreateMap<GameTypeTranslation, OutGameTypeTranslation>().ForMember(x => x.LangCode, x => x.MapFrom(x => x.Lang.Code));
         }
     }
 }

@@ -10,6 +10,8 @@ namespace IntelligenceBattle.WebApi.Dal.Models
         public Question()
         {
             Answers = new HashSet<Answer>();
+            GameQuestions = new HashSet<GameQuestion>();
+            SendQuestions = new HashSet<SendQuestion>();
         }
 
         public int Id { get; set; }
@@ -19,5 +21,7 @@ namespace IntelligenceBattle.WebApi.Dal.Models
 
         public virtual Category Category { get; set; }
         public virtual ICollection<Answer> Answers { get; set; }
+        public virtual ICollection<GameQuestion> GameQuestions { get; set; }
+        public virtual ICollection<SendQuestion> SendQuestions { get; set; }
     }
 }

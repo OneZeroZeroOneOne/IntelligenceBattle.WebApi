@@ -4,9 +4,11 @@ using System.Text;
 
 namespace IntelligenceBattle.WebApi.Dal.Models.Out
 {
-    public class OutCategoryResponce
+    public class OutCategory
     {
         public int Id { get; set; }
-        public string Tittle { get; set; }
+        public string Title { get; set; }
+        public List<OutCategoryTranslation> Translations { get; set; }
+
     }
 }

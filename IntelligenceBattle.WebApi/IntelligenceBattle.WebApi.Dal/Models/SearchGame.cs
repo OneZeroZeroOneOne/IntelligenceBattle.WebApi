@@ -7,11 +7,6 @@ namespace IntelligenceBattle.WebApi.Dal.Models
 {
     public partial class SearchGame
     {
-        public SearchGame()
-        {
-            GameUsers = new HashSet<GameUser>();
-        }
-
         public int Id { get; set; }
         public int GameTypeId { get; set; }
         public int CategoryId { get; set; }
@@ -22,6 +17,5 @@ namespace IntelligenceBattle.WebApi.Dal.Models
         public virtual GameType GameType { get; set; }
         public virtual AuthorizationProvider Provider { get; set; }
         public virtual User User { get; set; }
-        public virtual ICollection<GameUser> GameUsers { get; set; }
     }
 }

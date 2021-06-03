@@ -43,18 +43,18 @@ namespace IntelligenceBattle.WebApi.Controllers
 
         [HttpGet]
         [Route("GameType")]
-        public async Task<List<OutGameTypeResponce>> GetGameType()
+        public async Task<List<OutGameType>> GetGameTypes()
         {
-            var gameTypes = await gameService.GetGameType();
-            return mapperProfile.Map<List<OutGameTypeResponce>>(gameTypes);
+            var gameTypes = await gameService.GetGameTypes();
+            return mapperProfile.Map<List<OutGameType>>(gameTypes);
         }
 
         [HttpGet]
         [Route("Category")]
-        public async Task<List<OutCategoryResponce>> GetCategories()
+        public async Task<List<OutCategory>> GetCategories()
         {
             var categories = await gameService.GetCategories();
-            return mapperProfile.Map<List<OutCategoryResponce>>(categories);
+            return mapperProfile.Map<List<OutCategory>>(categories);
         }
 
     }
