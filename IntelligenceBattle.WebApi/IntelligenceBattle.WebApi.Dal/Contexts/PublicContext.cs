@@ -344,6 +344,8 @@ namespace IntelligenceBattle.WebApi.Dal.Contexts
 
                 entity.Property(e => e.CreatedDatetime).HasPrecision(6);
 
+                entity.Property(e => e.LangId).HasDefaultValueSql("1");
+
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasColumnType("character varying");
@@ -351,6 +353,12 @@ namespace IntelligenceBattle.WebApi.Dal.Contexts
                 entity.Property(e => e.Surname)
                     .IsRequired()
                     .HasColumnType("character varying");
+
+                entity.HasOne(d => d.Lang)
+                    .WithMany(p => p.Users)
+                    .HasForeignKey(d => d.LangId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("User_LangId_fkey");
             });
 
             modelBuilder.Entity<UserAnswer>(entity =>

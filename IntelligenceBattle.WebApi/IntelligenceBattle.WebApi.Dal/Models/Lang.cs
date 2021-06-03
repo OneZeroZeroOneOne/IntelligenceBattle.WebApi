@@ -11,6 +11,7 @@ namespace IntelligenceBattle.WebApi.Dal.Models
         {
             CategoryTranslations = new HashSet<CategoryTranslation>();
             GameTypeTranslations = new HashSet<GameTypeTranslation>();
+            Users = new HashSet<User>();
         }
 
         public int Id { get; set; }
@@ -18,5 +19,6 @@ namespace IntelligenceBattle.WebApi.Dal.Models
 
         public virtual ICollection<CategoryTranslation> CategoryTranslations { get; set; }
         public virtual ICollection<GameTypeTranslation> GameTypeTranslations { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }
