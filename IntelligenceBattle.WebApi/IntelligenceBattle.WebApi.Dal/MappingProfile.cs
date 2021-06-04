@@ -12,11 +12,30 @@ namespace IntelligenceBattle.WebApi.Dal
         public MappingProfile()
         {
             CreateMap<SearchGame, OutSearchGame>();
-            CreateMap<User, UserResponce>();
-            CreateMap<GameType, OutGameType>().ForMember(x => x.Translations, x=> x.MapFrom(x => x.GameTypeTranslations));
-            CreateMap<Category, OutCategory>().ForMember(x => x.Translations, x => x.MapFrom(x => x.CategoryTranslations));
-            CreateMap<CategoryTranslation, OutCategoryTranslation>().ForMember(x => x.LangCode, x => x.MapFrom(x => x.Lang.Code));
-            CreateMap<GameTypeTranslation, OutGameTypeTranslation>().ForMember(x => x.LangCode, x => x.MapFrom(x => x.Lang.Code));
+            CreateMap<User, OutUser>().ForMember(x => x.LangCode, x => x.MapFrom(x => x.Lang.Code));
+            CreateMap<GameType, OutGameType>()
+                .ForMember(x => x.Translations, x=> x.MapFrom(x => x.GameTypeTranslations));
+            CreateMap<Category, OutCategory>()
+                .ForMember(x => x.Translations, x => x.MapFrom(x => x.CategoryTranslations));
+            CreateMap<CategoryTranslation, OutCategoryTranslation>()
+                .ForMember(x => x.LangCode, x => x.MapFrom(x => x.Lang.Code));
+            CreateMap<GameTypeTranslation, OutGameTypeTranslation>()
+                .ForMember(x => x.LangCode, x => x.MapFrom(x => x.Lang.Code));
+            CreateMap<UserAnswer, OutUserAnswer>();
+
+            CreateMap<Answer, OutAnswer>()
+                .ForMember(x => x.Translations, x => x.MapFrom(x => x.AnswerTranslations));
+            CreateMap<AnswerTranslation, OutAnswerTranslation>()
+                .ForMember(x => x.LangCode, x => x.MapFrom(x => x.Lang.Code));
+
+
+            CreateMap<Question, OutQuestion>()
+                .ForMember(x => x.Translations, x => x.MapFrom(x => x.QuestionTranslations));
+            CreateMap<QuestionTranslation, OutQuestionTranslation>()
+                .ForMember(x => x.LangCode, x => x.MapFrom(x => x.Lang.Code));
+
+
+            CreateMap<SendQuestion, OutSendQuestion>();
         }
     }
 }

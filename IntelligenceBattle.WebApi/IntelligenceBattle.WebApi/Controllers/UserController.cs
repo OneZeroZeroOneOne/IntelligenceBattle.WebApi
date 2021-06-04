@@ -1,9 +1,12 @@
 ﻿using IntelligenceBattle.WebApi.Dal.Models.Out;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using IntelligenceBattle.WebApi.Bll.Services;
+using IntelligenceBattle.WebApi.Dal.Models;
+using IntelligenceBattle.WebApi.Utilities.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
@@ -26,9 +29,20 @@ namespace IntelligenceBattle.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<UserResponce> Get()
+        public async Task<OutUser> Get()
         {
-            return mapperProfile.Map<UserResponce>(await userService.GetUser(UserId));
+            return mapperProfile.Map<OutUser>(await userService.GetUser(UserId));
+        }
+
+        [HttpGet]
+        [Route("SendQuestion")]
+        public async Task<List<OutSendQuestion>> GetSendQuestions()
+        {
+            if (UserId == 1)
+            {
+                return mapperProfile.Map<List<OutSendQuestion>>(await userService.GetSendQuestion(ProviderId));
+            }
+            throw ExceptionFactory.SoftException(ExceptionEnum.AccessDenied,"access denied");
         }
     }
 }

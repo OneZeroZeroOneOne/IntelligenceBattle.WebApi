@@ -26,6 +26,7 @@ namespace IntelligenceBattle.WebApi.Dal.Contexts
         }
 
         public virtual DbSet<Answer> Answers { get; set; }
+        public virtual DbSet<AnswerTranslation> AnswerTranslations { get; set; }
         public virtual DbSet<AuthorizationCenter> AuthorizationCenters { get; set; }
         public virtual DbSet<AuthorizationProvider> AuthorizationProviders { get; set; }
         public virtual DbSet<AuthorizationProviderType> AuthorizationProviderTypes { get; set; }
@@ -40,6 +41,7 @@ namespace IntelligenceBattle.WebApi.Dal.Contexts
         public virtual DbSet<Notification> Notifications { get; set; }
         public virtual DbSet<NotificationType> NotificationTypes { get; set; }
         public virtual DbSet<Question> Questions { get; set; }
+        public virtual DbSet<QuestionTranslation> QuestionTranslations { get; set; }
         public virtual DbSet<SearchGame> SearchGames { get; set; }
         public virtual DbSet<SendQuestion> SendQuestions { get; set; }
         public virtual DbSet<User> Users { get; set; }
@@ -55,12 +57,35 @@ namespace IntelligenceBattle.WebApi.Dal.Contexts
             {
                 entity.ToTable("Answer");
 
-                entity.Property(e => e.Text).HasColumnType("character varying");
+                entity.Property(e => e.Text)
+                    .IsRequired()
+                    .HasColumnType("character varying");
 
                 entity.HasOne(d => d.Question)
                     .WithMany(p => p.Answers)
                     .HasForeignKey(d => d.QuestionId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Answer_QuestionId_fkey");
+            });
+
+            modelBuilder.Entity<AnswerTranslation>(entity =>
+            {
+                entity.HasKey(e => new { e.AnswerId, e.LangId })
+                    .HasName("AnswerTranslation_pkey");
+
+                entity.ToTable("AnswerTranslation");
+
+                entity.HasOne(d => d.Answer)
+                    .WithMany(p => p.AnswerTranslations)
+                    .HasForeignKey(d => d.AnswerId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("AnswerTranslation_AnswerId_fkey");
+
+                entity.HasOne(d => d.Lang)
+                    .WithMany(p => p.AnswerTranslations)
+                    .HasForeignKey(d => d.LangId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("AnswerTranslation_LangId_fkey");
             });
 
             modelBuilder.Entity<AuthorizationCenter>(entity =>
@@ -276,6 +301,28 @@ namespace IntelligenceBattle.WebApi.Dal.Contexts
                     .HasConstraintName("Question_CategoryId_fkey");
             });
 
+            modelBuilder.Entity<QuestionTranslation>(entity =>
+            {
+                entity.HasKey(e => new { e.QuestionId, e.LangId })
+                    .HasName("QuestionTranslation_pkey");
+
+                entity.ToTable("QuestionTranslation");
+
+                entity.Property(e => e.Title).IsRequired();
+
+                entity.HasOne(d => d.Lang)
+                    .WithMany(p => p.QuestionTranslations)
+                    .HasForeignKey(d => d.LangId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("QuestionTranslation_LangId_fkey");
+
+                entity.HasOne(d => d.Question)
+                    .WithMany(p => p.QuestionTranslations)
+                    .HasForeignKey(d => d.QuestionId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("QuestionTranslation_QuestionId_fkey");
+            });
+
             modelBuilder.Entity<SearchGame>(entity =>
             {
                 entity.ToTable("SearchGame");
@@ -392,7 +439,7 @@ namespace IntelligenceBattle.WebApi.Dal.Contexts
 
             modelBuilder.Entity<UserSecurity>(entity =>
             {
-                entity.HasKey(e => new { e.UserId, e.RealId })
+                entity.HasKey(e => new { e.UserId, e.AuthorizationCenterId })
                     .HasName("UserSecurity_pkey");
 
                 entity.ToTable("UserSecurity");

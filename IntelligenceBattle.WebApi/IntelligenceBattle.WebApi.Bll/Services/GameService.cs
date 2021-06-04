@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -64,6 +65,22 @@ namespace IntelligenceBattle.WebApi.Bll.Services
         public async Task<List<Category>> GetCategories()
         {
             return await context.Categories.Include(x => x.CategoryTranslations).ThenInclude(x => x.Lang).ToListAsync();
+        }
+
+
+        public async Task<UserAnswer> UserAnswer(InUserAnswer inUserAnswer, int userId)
+        {
+
+            var newUa = new UserAnswer
+            {
+                AnswerId = inUserAnswer.AnswerId,
+                GameId = inUserAnswer.GameId,
+                QuestionId = inUserAnswer.QuestionId,
+                UserId = userId,
+            };
+            await context.UserAnswers.AddAsync(newUa);
+            await context.SaveChangesAsync();
+            return newUa;
         }
     }
 }

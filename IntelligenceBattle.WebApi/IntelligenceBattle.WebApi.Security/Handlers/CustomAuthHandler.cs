@@ -53,8 +53,9 @@ namespace IntelligenceBattle.WebApi.Security.Handlers
                 
                 return AuthenticateResult.Success(ticket);
             }
-            catch
+            catch (Exception e)
             {
+                Console.WriteLine(e.Message);
                 return AuthenticateResult.Fail("unauthorized");
             }
         }

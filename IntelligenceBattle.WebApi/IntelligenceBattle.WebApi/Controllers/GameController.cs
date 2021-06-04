@@ -57,5 +57,12 @@ namespace IntelligenceBattle.WebApi.Controllers
             return mapperProfile.Map<List<OutCategory>>(categories);
         }
 
+        [HttpPost]
+        [Route("UserAnswer")]
+        public async Task<OutUserAnswer> UserAnswer([FromBody] InUserAnswer inUserAnswer)
+        {
+            var userAnswer = await gameService.UserAnswer(inUserAnswer, UserId);
+            return mapperProfile.Map<OutUserAnswer>(userAnswer);
+        }
     }
 }
