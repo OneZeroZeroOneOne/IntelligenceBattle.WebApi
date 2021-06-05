@@ -61,8 +61,11 @@ namespace IntelligenceBattle.WebApi.Controllers
         [Route("UserAnswer")]
         public async Task<OutUserAnswer> UserAnswer([FromBody] InUserAnswer inUserAnswer)
         {
-            var userAnswer = await gameService.UserAnswer(inUserAnswer, UserId);
-            return mapperProfile.Map<OutUserAnswer>(userAnswer);
+            var answer = await gameService.UserAnswer(inUserAnswer, UserId);
+            return new OutUserAnswer()
+            {
+                IsTrue = answer
+            };
         }
     }
 }

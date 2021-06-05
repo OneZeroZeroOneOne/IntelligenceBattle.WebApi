@@ -68,19 +68,25 @@ namespace IntelligenceBattle.WebApi.Bll.Services
         }
 
 
-        public async Task<UserAnswer> UserAnswer(InUserAnswer inUserAnswer, int userId)
+        public async Task<bool> UserAnswer(InUserAnswer inUserAnswer, int userId)
         {
-
-            var newUa = new UserAnswer
+            var gameQuestion = await context.GameQuestions
+                .FirstOrDefaultAsync(x => x.QuestionId == inUserAnswer.QuestionId && x.GameId == inUserAnswer.GameId);
+            if (gameQuestion.IsCurrent == true)
             {
-                AnswerId = inUserAnswer.AnswerId,
-                GameId = inUserAnswer.GameId,
-                QuestionId = inUserAnswer.QuestionId,
-                UserId = userId,
-            };
-            await context.UserAnswers.AddAsync(newUa);
-            await context.SaveChangesAsync();
-            return newUa;
+                var newUa = new UserAnswer
+                {
+                    AnswerId = inUserAnswer.AnswerId,
+                    GameId = inUserAnswer.GameId,
+                    QuestionId = inUserAnswer.QuestionId,
+                    UserId = userId,
+                };
+                await context.UserAnswers.AddAsync(newUa);
+                await context.SaveChangesAsync();
+                var answer = await context.Answers.FirstOrDefaultAsync(x => x.Id == inUserAnswer.AnswerId);
+                return answer.IsTrue;
+            }
+            throw ExceptionFactory.SoftException(ExceptionEnum.QuestionNotCurrent, "QuestionNotCurrent");
         }
     }
 }

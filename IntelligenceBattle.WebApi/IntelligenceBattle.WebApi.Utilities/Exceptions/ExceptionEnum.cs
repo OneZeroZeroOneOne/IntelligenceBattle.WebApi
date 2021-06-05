@@ -24,5 +24,6 @@ namespace IntelligenceBattle.WebApi.Utilities.Exceptions
         GameAlreadySearch = 16,
         LastGameNotEnd = 17,
         AccessDenied = 18,
+        QuestionNotCurrent = 19,
     }
 }
