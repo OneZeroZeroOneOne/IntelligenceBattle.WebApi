@@ -45,6 +45,19 @@ namespace IntelligenceBattle.WebApi.Controllers
             throw ExceptionFactory.SoftException(ExceptionEnum.AccessDenied,"access denied");
         }
 
+        [HttpDelete]
+        [Route("SendQuestion")]
+        public async Task<IActionResult> DeleteSendQuestions([FromQuery] int sendQuestionId)
+        {
+            if (UserId == 1)
+            {
+                await userService.DeleteSendQuestion(sendQuestionId);
+                return Ok();;
+            }
+            throw ExceptionFactory.SoftException(ExceptionEnum.AccessDenied, "access denied");
+        }
+
+
         [HttpGet]
         [Route("UserRealId")]
         public async Task<OutUserRealId> GetUserRealId([FromQuery] int userId)

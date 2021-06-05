@@ -41,6 +41,13 @@ namespace IntelligenceBattle.WebApi.Bll.Services
             return a;
         }
 
+        public async Task DeleteSendQuestion(int id)
+        {
+            var a = await context.SendQuestions.FirstOrDefaultAsync(x => x.Id == id);
+            context.Remove(a);
+            await context.SaveChangesAsync();
+        }
+
         public async Task<int> GetUserRealId(int userId, int providerId)
         {
             var authProvider = await context.AuthorizationProviders.Include(x => x.AuthorizationProviderType)
