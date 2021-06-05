@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using IntelligenceBattle.WebApi.Dal.Contexts;
 using IntelligenceBattle.WebApi.Dal.Models;
+using IntelligenceBattle.WebApi.Utilities.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace IntelligenceBattle.WebApi.Bll.Services
@@ -40,5 +41,19 @@ namespace IntelligenceBattle.WebApi.Bll.Services
             return a;
         }
 
+        public async Task<int> GetUserRealId(int userId, int providerId)
+        {
+            var authProvider = await context.AuthorizationProviders.Include(x => x.AuthorizationProviderType)
+                .FirstOrDefaultAsync(x => x.Id == providerId);
+            var us = await context.UserSecurities.FirstOrDefaultAsync(x =>
+                x.UserId == userId && x.AuthorizationCenterId ==
+                authProvider.AuthorizationProviderType.AuthorizationProviderCenterId);
+            if (us != null)
+            {
+                return us.RealId;
+            }
+
+            throw ExceptionFactory.SoftException(ExceptionEnum.UserNotFound, "UserNotFound");
+        }
     }
 }

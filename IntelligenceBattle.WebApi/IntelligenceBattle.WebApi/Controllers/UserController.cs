@@ -44,5 +44,18 @@ namespace IntelligenceBattle.WebApi.Controllers
             }
             throw ExceptionFactory.SoftException(ExceptionEnum.AccessDenied,"access denied");
         }
+
+        [HttpGet]
+        [Route("UserRealId")]
+        public async Task<OutUserRealId> GetUserRealId([FromQuery] int userId)
+        {
+            if (UserId == 1)
+            {
+                return new OutUserRealId(){
+                    RealId = await userService.GetUserRealId(userId, ProviderId)
+                };
+            }
+            throw ExceptionFactory.SoftException(ExceptionEnum.AccessDenied, "access denied");
+        }
     }
 }

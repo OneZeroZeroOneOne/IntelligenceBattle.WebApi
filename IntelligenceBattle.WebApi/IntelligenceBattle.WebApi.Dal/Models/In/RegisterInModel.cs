@@ -12,6 +12,5 @@ namespace IntelligenceBattle.WebApi.Dal.Models.In
         public string Login { get; set; }
         public string Password { get; set; }
         public int RealId { get; set; }
-        public int ProviderId { get; set; }
     }
 }

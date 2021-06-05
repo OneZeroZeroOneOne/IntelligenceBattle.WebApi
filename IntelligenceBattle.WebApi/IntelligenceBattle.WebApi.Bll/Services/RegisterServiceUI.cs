@@ -47,13 +47,15 @@ namespace IntelligenceBattle.WebApi.Bll.Services
                     Surname = registerInModel.Surname,
                     CreatedDatetime = DateTime.Now,
                 };
+                await context.Users.AddAsync(user);
+                await context.SaveChangesAsync();
                 user.UserSecurities.Add(new UserSecurity
                 {
                     Login = registerInModel.Login,
                     Password = registerInModel.Password,
                     AuthorizationCenterId = 1,
+                    RealId = user.Id
                 });
-                await context.Users.AddAsync(user);
                 await context.SaveChangesAsync();
                 return user;
             }
