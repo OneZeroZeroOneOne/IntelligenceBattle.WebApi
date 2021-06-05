@@ -49,11 +49,23 @@ namespace IntelligenceBattle.WebApi.Bll.Services
 
         public async Task StopSearchGame(int searchId)
         {
-            context.SearchGames.Remove(new SearchGame
+            var s = await context.SearchGames.FirstOrDefaultAsync(x => x.Id == searchId);
+            if (s != null)
             {
-                Id = searchId,
-            });
-            await context.SaveChangesAsync();
+                context.SearchGames.Remove(s);
+                await context.SaveChangesAsync();
+            }
+            
+        }
+
+        public async Task StopAllSearchGame(int userId)
+        {
+            var s = await context.SearchGames.FirstOrDefaultAsync(x => x.UserId == userId);
+            if (s != null)
+            {
+                context.SearchGames.Remove(s);
+                await context.SaveChangesAsync();
+            }
         }
 
         public async Task<List<GameType>> GetGameTypes()

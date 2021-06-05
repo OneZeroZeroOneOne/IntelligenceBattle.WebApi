@@ -34,10 +34,18 @@ namespace IntelligenceBattle.WebApi.Controllers
         }
 
         [HttpDelete]
-        [Route("SearchGame")]
-        public async Task<IActionResult> StopSearchGame([FromQuery] int searchId)
+        [Route("SearchGame/{searchId}")]
+        public async Task<IActionResult> StopSearchGame([FromRoute] int searchId)
         {
             await gameService.StopSearchGame(searchId);
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("SearchGame")]
+        public async Task<IActionResult> StopAllSearchGame()
+        {
+            await gameService.StopAllSearchGame(UserId);
             return Ok();
         }
 
