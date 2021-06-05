@@ -30,7 +30,7 @@ namespace IntelligenceBattle.WebApi.Bll.Services
             {
                 throw ExceptionFactory.SoftException(ExceptionEnum.GameAlreadySearch, "GameAlreadySearch");
             }
-            var game = await context.Games.FirstOrDefaultAsync(x => x.IsEnd == true);
+            var game = await context.Games.FirstOrDefaultAsync(x => x.IsEnd == false);
             if (game != null)
             {
                 throw ExceptionFactory.SoftException(ExceptionEnum.LastGameNotEnd, "LastGameNotEnd");
