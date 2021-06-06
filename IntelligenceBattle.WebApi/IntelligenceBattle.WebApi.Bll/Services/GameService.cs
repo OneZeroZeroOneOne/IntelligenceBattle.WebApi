@@ -95,7 +95,7 @@ namespace IntelligenceBattle.WebApi.Bll.Services
                 };
                 await context.UserAnswers.AddAsync(newUa);
                 await context.SaveChangesAsync();
-                return newUa;
+                return await context.UserAnswers.Include(x => x.Answer).Include(x => x.User).FirstOrDefaultAsync(x => x.Id == newUa.Id);
             }
             throw ExceptionFactory.SoftException(ExceptionEnum.QuestionNotCurrent, "QuestionNotCurrent");
         }
