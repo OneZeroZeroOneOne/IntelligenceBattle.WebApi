@@ -80,5 +80,17 @@ namespace IntelligenceBattle.WebApi.Bll.Services
             await context.SaveChangesAsync();
 
         }
+
+        public async Task<List<Lang>> GetLangs()
+        {
+            return await context.Langs.ToListAsync();
+        }
+
+        public async Task SetUserLang(int langId, int userId)
+        {
+            var user = await context.Users.FirstOrDefaultAsync(x => x.Id == userId);
+            user.LangId = langId;
+            await context.SaveChangesAsync();
+        }
     }
 }

@@ -94,5 +94,20 @@ namespace IntelligenceBattle.WebApi.Controllers
             }
             throw ExceptionFactory.SoftException(ExceptionEnum.AccessDenied, "access denied");
         }
+
+        [HttpGet]
+        [Route("Lang")]
+        public async Task<List<Lang>> GetLangs()
+        {
+            return  await userService.GetLangs();
+        }
+
+        [HttpPost]
+        [Route("Lang")]
+        public async Task<IActionResult> SetUserLang([FromQuery] int langId)
+        {
+            await userService.SetUserLang(langId, UserId);
+            return Ok();
+        }
     }
 }
