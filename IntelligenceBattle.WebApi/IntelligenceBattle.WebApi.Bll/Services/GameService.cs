@@ -80,7 +80,7 @@ namespace IntelligenceBattle.WebApi.Bll.Services
         }
 
 
-        public async Task<bool> UserAnswer(InUserAnswer inUserAnswer, int userId)
+        public async Task<UserAnswer> UserAnswer(InUserAnswer inUserAnswer, int userId)
         {
             var gameQuestion = await context.GameQuestions
                 .FirstOrDefaultAsync(x => x.QuestionId == inUserAnswer.QuestionId && x.GameId == inUserAnswer.GameId);
@@ -95,10 +95,20 @@ namespace IntelligenceBattle.WebApi.Bll.Services
                 };
                 await context.UserAnswers.AddAsync(newUa);
                 await context.SaveChangesAsync();
-                var answer = await context.Answers.FirstOrDefaultAsync(x => x.Id == inUserAnswer.AnswerId);
-                return answer.IsTrue;
+                return newUa;
             }
             throw ExceptionFactory.SoftException(ExceptionEnum.QuestionNotCurrent, "QuestionNotCurrent");
+        }
+
+        public async Task<List<UserAnswer>> GetResult(int gameId, int userId)
+        {
+            var gs = await context.GameUsers.FirstOrDefaultAsync(x => x.GameId == gameId && x.UserId == userId);
+            if (gs == null)
+            {
+                return new List<UserAnswer>();
+            }
+            return await context.UserAnswers.Include(x => x.User).Include(x => x.Answer).Where(x => x.GameId == gameId).ToListAsync();
+
         }
     }
 }

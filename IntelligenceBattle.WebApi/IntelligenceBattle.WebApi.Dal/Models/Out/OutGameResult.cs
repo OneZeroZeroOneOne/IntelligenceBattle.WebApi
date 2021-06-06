@@ -4,9 +4,8 @@ using System.Text;
 
 namespace IntelligenceBattle.WebApi.Dal.Models.Out
 {
-    public class OutUserAnswer
+    public class OutGameResult
     {
-        public OutUser User { get; set; }
-        public bool IsTrue { get; set; }
+        public List<OutUserScore> Users { get; set; }
     }
 }

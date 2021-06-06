@@ -36,6 +36,8 @@ namespace IntelligenceBattle.WebApi.Dal
 
 
             CreateMap<SendQuestion, OutSendQuestion>();
+
+            CreateMap<UserAnswer, OutUserAnswer>().ForMember(x => x.IsTrue, x => x.MapFrom(x => x.Answer.IsTrue));
         }
     }
 }

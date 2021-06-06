@@ -70,10 +70,17 @@ namespace IntelligenceBattle.WebApi.Controllers
         public async Task<OutUserAnswer> UserAnswer([FromBody] InUserAnswer inUserAnswer)
         {
             var answer = await gameService.UserAnswer(inUserAnswer, UserId);
-            return new OutUserAnswer()
-            {
-                IsTrue = answer
-            };
+            return mapperProfile.Map<OutUserAnswer>(answer);
+        }
+
+
+        [HttpGet]
+        [Route("Result")]
+        public async Task<List<OutUserAnswer>> GetResults([FromQuery] int gameId)
+        {
+            var categories = await gameService.GetCategories();
+            var ua = await gameService.GetResult(gameId, UserId);
+            return mapperProfile.Map<List<OutUserAnswer>>(ua);
         }
     }
 }
