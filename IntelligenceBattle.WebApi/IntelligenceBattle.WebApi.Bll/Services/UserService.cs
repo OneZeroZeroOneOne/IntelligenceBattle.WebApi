@@ -62,5 +62,23 @@ namespace IntelligenceBattle.WebApi.Bll.Services
 
             throw ExceptionFactory.SoftException(ExceptionEnum.UserNotFound, "UserNotFound");
         }
+
+        public async Task<List<Notification>> GetNotification(int providerId)
+        {
+            return await context.Notifications
+                .Include(x => x.Type)
+                .Include(x => x.User)
+                .ThenInclude(x => x.Lang)
+                .Where(x => x.ProviderId == providerId)
+                .ToListAsync();
+
+        }
+
+        public async Task DeleteNotification(int id)
+        {
+            context.Notifications.Remove(await context.Notifications.FirstOrDefaultAsync(x => x.Id == id));
+            await context.SaveChangesAsync();
+
+        }
     }
 }

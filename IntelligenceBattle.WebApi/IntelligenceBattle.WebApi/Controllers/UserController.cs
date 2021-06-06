@@ -70,5 +70,29 @@ namespace IntelligenceBattle.WebApi.Controllers
             }
             throw ExceptionFactory.SoftException(ExceptionEnum.AccessDenied, "access denied");
         }
+
+
+
+        [HttpGet]
+        [Route("Notification")]
+        public async Task<List<OutNotification>> GetNotification()
+        {
+            if (UserId == 1)
+            {
+                return mapperProfile.Map<List<OutNotification>>(await userService.GetNotification(ProviderId));
+            }
+            throw ExceptionFactory.SoftException(ExceptionEnum.AccessDenied, "access denied");
+        }
+
+        [HttpDelete]
+        [Route("Notification")]
+        public async Task<List<OutNotification>> GetNotification([FromQuery] int notificationId)
+        {
+            if (UserId == 1)
+            {
+                await userService.DeleteNotification(notificationId);
+            }
+            throw ExceptionFactory.SoftException(ExceptionEnum.AccessDenied, "access denied");
+        }
     }
 }
