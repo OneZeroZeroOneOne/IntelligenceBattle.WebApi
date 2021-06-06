@@ -97,9 +97,9 @@ namespace IntelligenceBattle.WebApi.Controllers
 
         [HttpGet]
         [Route("Lang")]
-        public async Task<List<Lang>> GetLangs()
+        public async Task<List<OutLang>> GetLangs()
         {
-            return  await userService.GetLangs();
+            return mapperProfile.Map<List<OutLang>>(await userService.GetLangs());
         }
 
         [HttpPost]
