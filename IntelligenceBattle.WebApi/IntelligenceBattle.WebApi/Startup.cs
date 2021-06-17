@@ -32,7 +32,7 @@ namespace IntelligenceBattle.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            Console.WriteLine(Environment.GetEnvironmentVariable("databaseconnectionstring"));
+            Console.WriteLine(Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("databaseconnectionstring")));
             services.AddScoped(x =>
             {
                 return new PublicContext(Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("databaseconnectionstring")));
