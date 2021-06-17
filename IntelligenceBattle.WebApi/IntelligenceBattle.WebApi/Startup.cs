@@ -34,7 +34,7 @@ namespace IntelligenceBattle.WebApi
             services.AddControllers();
             services.AddScoped(x =>
             {
-                return new PublicContext(Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("databaseconnectionstring")));
+                return new PublicContext(Environment.GetEnvironmentVariable("databaseconnectionstring"));
                 //return new PublicContext(Environment.GetEnvironmentVariable("databaseconnectionstring"));
             });
             services.AddSingleton(x => new AuthOptions 
